@@ -1,26 +1,39 @@
+import { NavLink } from 'react-router-dom';
 import { FiAward, FiBookOpen, FiCompass, FiHome, FiMessageCircle, FiUser } from 'react-icons/fi';
 import Logo from './Logo';
 
 const items = [
-  { label: 'Home', icon: FiHome },
-  { label: 'Explore', icon: FiCompass },
-  { label: 'Articles', icon: FiBookOpen },
-  { label: 'Debates', icon: FiMessageCircle },
-  { label: 'Progress', icon: FiAward },
-  { label: 'Profile', icon: FiUser }
+  { label: 'Home', icon: FiHome, path: '/' },
+  { label: 'Explore', icon: FiCompass, path: '/explore' },
+  { label: 'Articles', icon: FiBookOpen, path: '/articles' },
+  { label: 'Debates', icon: FiMessageCircle, path: '/debates' },
+  { label: 'Progress', icon: FiAward, path: '/progress' },
+  { label: 'Profile', icon: FiUser, path: '/profile' }
 ];
 
-export default function Sidebar({ mobileOpen, setMobileOpen }) {
+export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
     <>
-      <aside className={`sidebar ${mobileOpen ? 'open' : ''}`}>
-        <Logo />
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        {/* Logo with left padding to clear the fixed toggle button */}
+        <div style={{ paddingLeft: '48px' }}>
+          <Logo />
+        </div>
         <nav aria-label="Primary navigation">
-          {items.map(({ label, icon: Icon }, index) => (
-            <button key={label} className={`nav-item ${index === 0 ? 'active' : ''}`}>
+          {items.map(({ label, icon: Icon, path }) => (
+            <NavLink
+              key={label}
+              to={path}
+              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => {
+                if (window.innerWidth <= 900) {
+                  setSidebarOpen(false);
+                }
+              }}
+            >
               <Icon />
               <span>{label}</span>
-            </button>
+            </NavLink>
           ))}
         </nav>
         <div className="sidebar-card">
@@ -29,7 +42,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }) {
           <span>Context-based news practice</span>
         </div>
       </aside>
-      {mobileOpen && <button className="backdrop" aria-label="Close navigation" onClick={() => setMobileOpen(false)} />}
+      {sidebarOpen && window.innerWidth <= 900 && (
+        <button className="backdrop" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />
+      )}
     </>
   );
 }
