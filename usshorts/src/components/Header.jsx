@@ -1,14 +1,11 @@
-import { FiBell, FiGlobe, FiMenu, FiSearch } from 'react-icons/fi';
+import { FiBell, FiGlobe, FiSearch } from 'react-icons/fi';
 
-export default function Header({ setMobileOpen }) {
+export default function Header() {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <button className="icon-btn mobile-only" onClick={() => setMobileOpen(true)} aria-label="Open navigation">
-          <FiMenu />
-        </button>
         <div>
-          <p className="eyebrow">Today’s learning feed</p>
+          <p className="eyebrow">Today's learning feed</p>
           <h1>Read global news in the language you want to master</h1>
         </div>
       </div>
