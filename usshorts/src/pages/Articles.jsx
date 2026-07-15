@@ -24,7 +24,7 @@ export default function Articles() {
     }, [activeId, filteredArticles]);
 
     return (
-        <div className="articles-page" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="articles-page">
             <div className="section-head" style={{ marginBottom: '2rem' }}>
                 <div>
                     <p className="eyebrow">Article Library</p>
@@ -32,23 +32,15 @@ export default function Articles() {
                 </div>
             </div>
 
-            <div className="filters-container" style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-                <div>
-                    <h4 style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Difficulty Level</h4>
+            <div className="filters-container">
+                <div className="filter-group">
+                    <h4>Difficulty Level</h4>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         {levels.map((level) => (
                             <button
                                 key={level}
+                                className={`filter-btn ${selectedLevel === level ? 'active' : ''}`}
                                 onClick={() => setSelectedLevel(level)}
-                                style={{
-                                    padding: '0.5rem 1rem',
-                                    borderRadius: '8px',
-                                    border: '1px solid var(--border)',
-                                    background: selectedLevel === level ? 'var(--primary)' : 'var(--bg-card)',
-                                    color: selectedLevel === level ? 'white' : 'var(--text)',
-                                    cursor: 'pointer',
-                                    fontWeight: 500
-                                }}
                             >
                                 {level}
                             </button>
@@ -56,22 +48,14 @@ export default function Articles() {
                     </div>
                 </div>
 
-                <div>
-                    <h4 style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Category</h4>
+                <div className="filter-group">
+                    <h4>Category</h4>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         {categories.map((category) => (
                             <button
                                 key={category}
+                                className={`filter-btn ${selectedCategory === category ? 'active' : ''}`}
                                 onClick={() => setSelectedCategory(category)}
-                                style={{
-                                    padding: '0.5rem 1rem',
-                                    borderRadius: '8px',
-                                    border: '1px solid var(--border)',
-                                    background: selectedCategory === category ? 'var(--primary)' : 'var(--bg-card)',
-                                    color: selectedCategory === category ? 'white' : 'var(--text)',
-                                    cursor: 'pointer',
-                                    fontWeight: 500
-                                }}
                             >
                                 {category}
                             </button>
@@ -80,10 +64,10 @@ export default function Articles() {
                 </div>
             </div>
 
-            <div className="feed-layout" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem' }}>
+            <div className="feed-layout" style={{ gridTemplateColumns: '1fr', maxWidth: '800px', margin: '0 auto' }}>
                 <div className="news-column">
                     <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Available Articles ({filteredArticles.length})</h3>
-                    <div className="news-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="news-list">
                         {filteredArticles.map((article) => (
                             <NewsCard
                                 key={article.id}
@@ -94,21 +78,10 @@ export default function Articles() {
                         ))}
                         {filteredArticles.length === 0 && (
                             <div style={{ textAlign: 'center', padding: '3rem', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)' }}>
-                                <p style={{ color: 'var(--text-muted)' }}>No articles match the selected filters.</p>
+                                <p style={{ color: 'var(--muted)' }}>No articles match the selected filters.</p>
                             </div>
                         )}
                     </div>
-                </div>
-
-                <div>
-                    <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Reader Panel</h3>
-                    {activeArticle ? (
-                        <ArticlePanel article={activeArticle} />
-                    ) : (
-                        <div style={{ textAlign: 'center', padding: '3rem', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)' }}>
-                            <p style={{ color: 'var(--text-muted)' }}>Select an article to start reading.</p>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
