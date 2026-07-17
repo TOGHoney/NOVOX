@@ -12,29 +12,31 @@ export default function Home() {
   );
 
   return (
-    <section className="feed-layout">
-      <div className="news-column">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">Smart short feed</p>
-            <h2>Briefs matched to your reading behavior</h2>
+    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '2rem' }}>
+      <section className="feed-layout">
+        <div className="news-column">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Smart short feed</p>
+              <h2>Briefs matched to your reading behavior</h2>
+            </div>
+            <span className="pill soft">Based on time spent + topic interest</span>
           </div>
-          <span className="pill soft">Based on time spent + topic interest</span>
+          <div className="news-list">
+            {shortNews.map((article) => (
+              <NewsCard
+                key={article.id}
+                article={article}
+                activeId={activeId}
+                onSelect={(id) => {
+                  setActiveId(id);
+                }}
+              />
+            ))}
+          </div>
         </div>
-        <div className="news-list">
-          {shortNews.map((article) => (
-            <NewsCard
-              key={article.id}
-              article={article}
-              activeId={activeId}
-              onSelect={(id) => {
-                setActiveId(id);
-              }}
-            />
-          ))}
-        </div>
-      </div>
-      <ArticlePanel article={activeArticle} />
-    </section>
+        <ArticlePanel article={activeArticle} />
+      </section>
+    </div>
   );
 }
