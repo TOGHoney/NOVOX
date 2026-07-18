@@ -11,11 +11,13 @@ import Progress from './pages/Progress';
 import Profile from './pages/Profile';
 
 export default function App() {
+  const [view, setView] = useState('signup');
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeId, setActiveId] = useState(shortNews[0]?.id);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
     <div className={`app-shell ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
-      {/* Single fixed toggle button that blends with sidebar when open */}
       <button
         className={`sidebar-toggle-btn ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
         onClick={() => setSidebarOpen((prev) => !prev)}
@@ -24,10 +26,37 @@ export default function App() {
         <FiMenu size={20} />
       </button>
 
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+
       <div className="app-main">
-        <Header />
+        <Header setMobileOpen={setMobileOpen} />
+
         <main className="content-area">
+          <section className="feed-layout">
+            <div className="news-column">
+              {shortNews.map((article) => (
+                <NewsCard
+                  key={article.id}
+                  article={article}
+                  activeId={activeId}
+                  onSelect={(id) => {
+                    setActiveId(id);
+                    setMobileOpen(false);
+                  }}
+                />
+              ))}
+            </div>
+
+            {activeArticle && <ArticlePanel article={activeArticle} />}
+          </section>
+
+          <DashboardPanel />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
