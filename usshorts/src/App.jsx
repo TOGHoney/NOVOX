@@ -1,8 +1,16 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import Sidebar from './components/Sidebar';
+
+import ArticlePanel from './components/ArticlePanel';
+import DashboardPanel from './components/DashboardPanel';
 import Header from './components/Header';
+import NewsCard from './components/NewsCard';
+import Sidebar from './components/Sidebar';
+
+import { shortNews } from './data/mockData';
+import Login from './pages/login';
+import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Explore from './pages/Explore';
 import Articles from './pages/Articles';
@@ -15,6 +23,19 @@ export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeId, setActiveId] = useState(shortNews[0]?.id);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const activeArticle = useMemo(
+    () => shortNews.find((item) => item.id === activeId) ?? shortNews[0],
+    [activeId]
+  );
+
+  if (view === 'login') {
+    return <Login setView={setView} />;
+  }
+
+  if (view === 'signup') {
+    return <Signup setView={setView} />;
+  }
 
   return (
     <div className={`app-shell ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
