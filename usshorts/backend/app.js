@@ -9,7 +9,9 @@ app.use(express.json());
 
 // 3. ROUTES
 const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes); // 4. NOW YOU CAN USE IT
+const newsRoutes = require('./routes/newsRoutes');
+app.use('/api/auth', authRoutes);
+app.use('/api/news', newsRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {
