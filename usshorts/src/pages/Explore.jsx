@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import NewsCard from '../components/NewsCard';
-import NotFound from './NotFound';
 import { searchNews } from '../api/newsService';
 
 const TOPICS = ['Technology', 'Business', 'Science', 'Health', 'Sports', 'Entertainment'];
@@ -10,19 +9,19 @@ export default function Explore() {
     const [searchQuery, setSearchQuery] = useState('');
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
 
     const handleSearch = async (query) => {
         if (!query.trim()) return;
         setLoading(true);
-        setError(false);
+        setError(null);
         setHasSearched(true);
         try {
             const data = await searchNews(query);
             setArticles(data);
-        } catch {
-            setError(true);
+        } catch (err) {
+            setError(err.response?.data?.error || err.message);
         } finally {
             setLoading(false);
         }
@@ -38,7 +37,17 @@ export default function Explore() {
         handleSearch(searchQuery);
     };
 
-    if (error) return <NotFound />;
+    if (error) {
+        return (
+            <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+                <div style={{ background: 'var(--bg-card, #1a1a1a)', border: '1px solid #e74c3c', borderTop: '3px solid #e74c3c', borderRadius: '12px', padding: '2rem', textAlign: 'center' }}>
+                    <h3 style={{ color: '#e74c3c', marginBottom: '0.5rem' }}>Search failed</h3>
+                    <p style={{ color: 'var(--text-muted, #888)', marginBottom: '1.5rem' }}>{error}</p>
+                    <button onClick={() => { setError(null); handleSearch(searchQuery); }} style={{ background: 'var(--primary, #6c63ff)', color: '#fff', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 500 }}>Try Again</button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="explore-page" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>

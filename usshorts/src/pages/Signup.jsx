@@ -26,7 +26,7 @@ const Signup = ({ setView }) => {
             await signup({ username, email, password });
             setView('dashboard');
         } catch (err) {
-            setError(err.response?.data?.message || 'An error occurred during signup.');
+            setError(err.response?.data?.message || err.message);
         } finally {
             setLoading(false);
         }

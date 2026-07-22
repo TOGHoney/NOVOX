@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import NewsCard from '../components/NewsCard';
-import NotFound from './NotFound';
 import { fetchHeadlines } from '../api/newsService';
 
 const CATEGORIES = [
@@ -16,23 +15,37 @@ const CATEGORIES = [
 export default function Articles() {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('general');
     const [activeId, setActiveId] = useState(null);
 
-    useEffect(() => {
+    const loadArticles = (category) => {
         setLoading(true);
-        setError(false);
-        fetchHeadlines(selectedCategory)
+        setError(null);
+        fetchHeadlines(category)
             .then((data) => {
                 setArticles(data);
                 if (data.length > 0) setActiveId(data[0].id);
             })
-            .catch(() => setError(true))
+            .catch((err) => setError(err.response?.data?.error || err.message))
             .finally(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        loadArticles(selectedCategory);
     }, [selectedCategory]);
 
-    if (error) return <NotFound />;
+    if (error) {
+        return (
+            <div className="articles-page" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
+                <div style={{ background: 'var(--bg-card, #1a1a1a)', border: '1px solid #e74c3c', borderTop: '3px solid #e74c3c', borderRadius: '12px', padding: '2rem', textAlign: 'center' }}>
+                    <h3 style={{ color: '#e74c3c', marginBottom: '0.5rem' }}>Failed to load articles</h3>
+                    <p style={{ color: 'var(--text-muted, #888)', marginBottom: '1.5rem' }}>{error}</p>
+                    <button onClick={() => loadArticles(selectedCategory)} style={{ background: 'var(--primary, #6c63ff)', color: '#fff', border: 'none', padding: '0.6rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 500 }}>Try Again</button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="articles-page">
