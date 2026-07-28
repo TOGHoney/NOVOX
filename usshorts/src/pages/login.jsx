@@ -13,7 +13,7 @@ const Login = ({ setView }) => {
         setError('');
         setLoading(true);
         try {
-            await login(formData);
+            const data=await login(formData);
             setView('dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Invalid email or password.');

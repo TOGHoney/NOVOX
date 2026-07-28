@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
 import Header from './components/Header';
@@ -15,9 +15,18 @@ import Progress from './pages/Progress';
 import Profile from './pages/Profile';
 
 export default function App() {
-  const [view, setView] = useState('signup');
+  const [user, setUser]=useState(null);
+  const [view, setView] = useState('login');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useEffect(()=>{
+    const savedUser=localStorage.getItem('user');
+    if(savedUser){
+      setUser(JSON.parse(savedUser));
+      setView('dashboard');
+    }
+  }, []);
 
   if (view === 'login') {
     return <Login setView={setView} />;
