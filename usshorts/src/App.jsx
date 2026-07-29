@@ -1,9 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { FiMenu } from 'react-icons/fi';
-
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
 
 import Login from './pages/login';
 import Signup from './pages/Signup';
@@ -13,60 +8,24 @@ import Articles from './pages/Articles';
 import Debates from './pages/Debates';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import { ProtectedRoute } from './components/ProtectedRoutes';
+import AppLayout from './layouts/AppLayout';
 
 export default function App() {
-  const [user, setUser]=useState(null);
-  const [view, setView] = useState('login');
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  useEffect(()=>{
-    const savedUser=localStorage.getItem('user');
-    if(savedUser){
-      setUser(JSON.parse(savedUser));
-      setView('dashboard');
-    }
-  }, []);
-
-  if (view === 'login') {
-    return <Login setView={setView} />;
-  }
-
-  if (view === 'signup') {
-    return <Signup setView={setView} />;
-  }
-
   return (
-    <div className={`app-shell ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
-      <button
-        className={`sidebar-toggle-btn ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
-        onClick={() => setSidebarOpen((prev) => !prev)}
-        aria-label="Toggle navigation"
-      >
-        <FiMenu size={20} />
-      </button>
-
-      <Sidebar
-        mobileOpen={mobileOpen}
-        setMobileOpen={setMobileOpen}
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-      />
-
-      <div className="app-main">
-        <Header setMobileOpen={setMobileOpen} />
-
-        <main className="content-area">
-          <Routes>
-            <Route path="/" element={<Home />} />
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup/>}/>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/articles" element={<Articles />} />
             <Route path="/debates" element={<Debates />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </main>
-      </div>
-    </div>
+        </Route>
+      </Route>
+    </Routes>
   );
 }
