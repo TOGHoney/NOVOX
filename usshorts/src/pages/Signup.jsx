@@ -81,6 +81,7 @@ const Signup = ({ setView }) => {
                             name="password"
                             type="password"
                             autoComplete="new-password"
+                            minLength={6}
                             required
                             value={password}
                             onChange={onChange}

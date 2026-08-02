@@ -11,11 +11,13 @@ import Home from './pages/Home';
 import Explore from './pages/Explore';
 import Articles from './pages/Articles';
 import Debates from './pages/Debates';
+import DebateRoom from './pages/DebateRoom';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import { getUser } from './api/authService';
 
 export default function App() {
-  const [view, setView] = useState('signup');
+  const [view, setView] = useState(() => (getUser() ? 'dashboard' : 'signup'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -53,6 +55,7 @@ export default function App() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/articles" element={<Articles />} />
             <Route path="/debates" element={<Debates />} />
+            <Route path="/debates/:id" element={<DebateRoom />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
