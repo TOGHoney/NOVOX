@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiAward, FiLogOut, FiBookOpen, FiCompass, FiHome, FiMessageCircle, FiUser } from 'react-icons/fi';
-import Logo from './Logo';
-
+import { FiAward, FiLogOut, FiBookOpen, FiCompass, FiHome, FiMessageCircle, FiUser, FiSettings } from 'react-icons/fi';
+import '../styles/Sidebar.css';
 const items = [
   { label: 'Home', icon: FiHome, path: '/' },
   { label: 'Explore', icon: FiCompass, path: '/explore' },
@@ -11,51 +10,44 @@ const items = [
   { label: 'Profile', icon: FiUser, path: '/profile' }
 ];
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
-  const navigate=useNavigate();
-  const logout=()=>{
+export default function Sidebar() {
+  const navigate = useNavigate();
+
+  const logout = () => {
     localStorage.removeItem('user');
     navigate('/login');
-  }
+  };
+
   return (
-    <>
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        {/* Logo with left padding to clear the fixed toggle button */}
-        <div style={{ paddingLeft: '48px' }}>
-          <Logo />
+    <aside className="sidebar">
+      {/* Top Logo Icon */}
+      <div className="logo-container">
+        <div className="pinterest-logo">
+          {/* Replace with your logo SVG/Image */}
+          <span className="logo-icon">N</span>
         </div>
-        <nav aria-label="Primary navigation">
-          {items.map(({ label, icon: Icon, path }) => (
-            <NavLink
-              key={label}
-              to={path}
-              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => {
-                if (window.innerWidth <= 900) {
-                  setSidebarOpen(false);
-                }
-              }}
-            >
-              <Icon />
-              <span>{label}</span>
-            </NavLink>
-          ))}
-        </nav>
+      </div>
 
-        <button className="nav-item" onClick={logout}>
-          <FiLogOut/>
-          <span>Logout</span>
+      {/* Main Navigation Icons */}
+      <nav aria-label="Primary navigation" className="nav-list">
+        {items.map(({ label, icon: Icon, path }) => (
+          <NavLink
+            key={label}
+            to={path}
+            title={label}
+            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+          >
+            <Icon size={22} />
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* Bottom Action Icons */}
+      <div className="sidebar-bottom">
+        <button className="nav-item" title="Logout" onClick={logout}>
+          <FiLogOut size={22} />
         </button>
-
-        <div className="sidebar-card">
-          <p>Language pair</p>
-          <strong>Hindi → Japanese</strong>
-          <span>Context-based news practice</span>
-        </div>
-      </aside>
-      {sidebarOpen && window.innerWidth <= 900 && (
-        <button className="backdrop" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />
-      )}
-    </>
+      </div>
+    </aside>
   );
 }
