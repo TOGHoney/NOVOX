@@ -15,8 +15,12 @@ const Login = () => {
         setError('');
         setLoading(true);
         try {
-            await login(formData);
-            navigate('/');
+            const user=await login(formData);
+            if(user.profileCompleted){
+                navigate('/');
+            }else{
+                navigate('/learning-profile');
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Invalid email or password.');
         } finally {
