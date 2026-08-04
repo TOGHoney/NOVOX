@@ -1,0 +1,90 @@
+:root {
+  --sidebar-width: 72px;
+}
+
+/* ── Fixed Pinterest Sidebar Container ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  box-sizing: border-box;
+  z-index: 1000;
+  border-right: 1px solid #e2e8f0;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 32px; /* Breathing room below the logo */
+}
+
+.logo-icon {
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #111111;
+  line-height: 1;
+}
+
+/* ── Top Navigation Group (Generous Vertical Spacing) ── */
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px; /* Increased spacing to prevent clumping */
+  width: 100%;
+}
+
+/* ── Perfectly Centered Icon Buttons ── */
+.sidebar .nav-item {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #111111 !important;
+  background: transparent !important;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.sidebar .nav-item svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2px;
+  display: block;
+}
+
+/* Hover effect matching Pinterest */
+.sidebar .nav-item:hover {
+  background-color: #f0f0f0 !important;
+}
+
+/* Active State matching Pinterest (Solid black circle) */
+.sidebar .nav-item.active {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+}
+
+/* ── Bottom Settings/Logout Group ── */
+.sidebar-bottom {
+  margin-top: auto; /* Pushes logout icon to the very bottom */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
