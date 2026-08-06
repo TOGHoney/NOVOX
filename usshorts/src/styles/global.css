@@ -51,84 +51,29 @@ input {
 }
 
 /* ── App Shell ── */
-
 .app-shell {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  transition: grid-template-columns 0.3s ease;
+  display: flex;
+  width: 100%;
 }
 
 .app-main {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  flex: 1;
+  margin-left: 64px; /* Matches sidebar width exactly */
+  width: calc(100% - 64px);
 }
 
 .content-area {
   flex: 1;
+  width: 100%;
 }
 
-/* ── Sidebar ── */
-
-.sidebar {
-  transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
-  padding: 28px 20px;
-  background: #0f172a;
-  color: #f8fafc;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: sticky;
-  top: 0;
-  min-height: 100vh;
-}
-
-.app-shell.sidebar-collapsed {
-  grid-template-columns: 0px 1fr;
-}
-
-.app-shell.sidebar-collapsed .sidebar {
-  transform: translateX(-100%);
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
+/* Toggle button hidden since Pinterest sidebar is fixed */
 .sidebar-toggle-btn {
-  position: fixed;
-  top: 20px;
-  left: 16px;
-  z-index: 100;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.sidebar-toggle-btn.sidebar-open {
-  background: rgba(255, 255, 255, 0.10);
-  color: #f8fafc;
-  box-shadow: none;
-}
-
-.sidebar-toggle-btn.sidebar-open:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.sidebar-toggle-btn.sidebar-closed {
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.sidebar-toggle-btn.sidebar-closed:hover {
-  background: var(--surface-2);
+  display: none;
 }
 
 .logo {
@@ -213,7 +158,6 @@ input {
 }
 
 /* ── Topbar ── */
-
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -222,9 +166,11 @@ input {
   align-items: flex-start;
 }
 
-.topbar-left {
+.topbar {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 24px 16px 16px; /* Reduced left padding from 32px to 16px */
   align-items: flex-start;
 }
 
@@ -250,7 +196,6 @@ input {
 }
 
 /* ── Eyebrow & Pills ── */
-
 .eyebrow {
   margin: 0;
   color: var(--primary);
@@ -282,7 +227,6 @@ input {
 }
 
 /* ── Section Head ── */
-
 .section-head {
   display: flex;
   align-items: flex-start;
@@ -296,7 +240,6 @@ input {
 }
 
 /* ── News Card ── */
-
 .news-list {
   margin-top: 20px;
   display: grid;
@@ -358,7 +301,6 @@ input {
 }
 
 /* ── Buttons ── */
-
 .primary-btn,
 .ghost-btn {
   height: 46px;
@@ -403,7 +345,6 @@ input {
 }
 
 /* ── Filter Buttons (Articles page) ── */
-
 .filter-group h4 {
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
@@ -436,7 +377,6 @@ input {
 }
 
 /* ── Feed Layout ── */
-
 .feed-layout {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -449,7 +389,6 @@ input {
 }
 
 /* ── Article Panel ── */
-
 .article-panel {
   position: sticky;
   top: 20px;
@@ -482,7 +421,6 @@ input {
 }
 
 /* ── Translation & Discussion ── */
-
 .translation-box,
 .discussion-card {
   border-radius: 20px;
@@ -508,7 +446,6 @@ input {
 }
 
 /* ── Dashboard / Progress ── */
-
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
@@ -600,7 +537,6 @@ input {
 }
 
 /* ── Auth Pages ── */
-
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -788,9 +724,8 @@ input {
 }
 
 /* ── Pages ── */
-
 .articles-page {
-  max-width: 900px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -810,7 +745,6 @@ input {
 }
 
 /* ── Backdrop ── */
-
 .backdrop {
   display: none;
   position: fixed;
@@ -819,7 +753,6 @@ input {
 }
 
 /* ── Responsive ── */
-
 @media (max-width: 1180px) {
   .feed-layout,
   .dashboard-grid {
@@ -828,49 +761,20 @@ input {
 }
 
 @media (max-width: 900px) {
-  .app-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: min(82vw, 290px);
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
-    z-index: 30;
-  }
-
-  .backdrop {
-    display: block;
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .mobile-only {
-    display: grid;
-  }
-
   .topbar {
     padding: 22px 18px 18px;
     flex-direction: column;
   }
-
   .topbar-actions {
     width: 100%;
   }
-
   .search-box {
     min-width: 0;
     flex: 1;
   }
-
   .content-area {
     padding: 0 18px 22px;
   }
-
   .discussion-card {
     grid-template-columns: 1fr;
   }
@@ -880,7 +784,6 @@ input {
   .topbar h1 {
     font-size: 1.55rem;
   }
-
   .section-head,
   .panel-heading,
   .article-toolbar,
@@ -888,18 +791,15 @@ input {
     flex-direction: column;
     align-items: stretch;
   }
-
   .stats-grid {
     grid-template-columns: 1fr;
   }
-
   .news-column,
   .article-panel,
   .panel {
     padding: 18px;
     border-radius: 20px;
   }
-
   .filters-container {
     flex-direction: column;
     align-items: stretch;

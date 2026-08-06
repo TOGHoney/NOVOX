@@ -58,6 +58,7 @@ const Login = () => {
                         <input
                             name="password"
                             type="password"
+                            minLength={6}
                             required
                             onChange={onChange}
                             className="auth-input"

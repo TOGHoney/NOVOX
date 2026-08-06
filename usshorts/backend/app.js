@@ -14,6 +14,10 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/users', userRoutes);
+const debateRoutes = require('./routes/debateRoutes');
+app.use('/api/auth', authRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/debates', debateRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {
