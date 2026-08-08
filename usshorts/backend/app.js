@@ -10,6 +10,10 @@ app.use(express.json());
 // 3. ROUTES
 const authRoutes = require('./routes/authRoutes');
 const newsRoutes = require('./routes/newsRoutes');
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/auth', authRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/users', userRoutes);
 const debateRoutes = require('./routes/debateRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);

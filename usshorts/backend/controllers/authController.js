@@ -34,7 +34,13 @@ exports.signup = async (req, res) => {
         const user = await User.create({ username: username.trim(), email: email.toLowerCase(), password });
         res.status(201).json({ 
             _id: user._id, 
-            username: user.username, 
+            username: user.username,
+            email: user.email,
+            nativeLanguage: user.nativeLanguage,
+            targetLanguage: user.targetLanguage,
+            cefrLevel: user.cefrLevel,
+            profileCompleted: user.profileCompleted,
+            streak: user.streak,
             token: generateToken(user._id) 
         });
     } catch (error) {
@@ -55,7 +61,17 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-        res.json({ _id: user._id, username: user.username, token: generateToken(user._id) });
+        res.json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            nativeLanguage: user.nativeLanguage,
+            targetLanguage: user.targetLanguage,
+            cefrLevel: user.cefrLevel,
+            profileCompleted: user.profileCompleted,
+            streak: user.streak,
+            token: generateToken(user._id)
+        });
     } else {
         res.status(401).json({ message: 'Invalid credentials' });
     }
