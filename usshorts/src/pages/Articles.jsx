@@ -20,6 +20,9 @@ import {
   estimateCEFR
 } from '../utils/articleUtils';
 
+import useArticleTranslation from '../hooks/useArticleTranslation';
+import { useLanguage } from '../context/LanguageContext';
+
 import { InteractiveText, WordIntelligencePanel } from '../components/WordIntelligence';
 import CommentSidebar from '../components/CommentSidebar';
 
@@ -52,6 +55,10 @@ export default function Articles() {
   // Floating Comments State
   const [showComments, setShowComments] = useState(false);
   const [commentList, setCommentList] = useState([]);
+
+  // Article Translation
+  const { translations, loading: translating, unavailable } = useArticleTranslation(articles);
+  const { targetLanguage } = useLanguage();
 
   useEffect(() => {
     if (viewMode === 'full' && activeArticle?.url) {
@@ -341,6 +348,13 @@ export default function Articles() {
               </button>
             ))}
           </div>
+          {(translating || unavailable) && targetLanguage !== 'en' && (
+            <div style={{ marginBottom: '0.75rem', fontSize: '0.85rem', opacity: 0.7 }}>
+              {unavailable
+                ? 'Translation service unavailable — showing original text.'
+                : `Translating to ${targetLanguage.toUpperCase()}...`}
+            </div>
+          )}
           <main style={{ flex: 1, overflowY: 'auto', paddingRight: '6px' }}>
             {loading ? (
               <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>Loading articles...</div>
@@ -350,6 +364,7 @@ export default function Articles() {
                 const articleId = article.id || article.url || index;
                 const isExpanded = !!expandedSummaries[articleId];
                 const imageUrl = article.urlToImage || article.image || article.imageUrl;
+                const translation = translations[article.id];
                 return (
                   <div key={articleId} ref={isLast ? lastArticleElementRef : null} style={{ background: '#fff', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', border: '1px solid #e2e8f0', display: 'flex', gap: '1rem' }}>
                     <img src={imageUrl || 'https://via.placeholder.com/180x120?text=No+Image'} alt="" style={{ width: '180px', height: '120px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
@@ -359,10 +374,10 @@ export default function Articles() {
                           {article.source?.name || 'NEWS'} • {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Today'}
                         </span>
                         <h3 style={{ margin: '0.25rem 0 0.5rem 0', fontSize: '1rem', color: '#0f172a', fontWeight: 700 }}>
-                          <InteractiveText text={article.title} onSelectWord={handleWordSelect} />
+                          <InteractiveText text={translation?.title || article.title} onSelectWord={handleWordSelect} />
                         </h3>
                         <p style={{ margin: 0, fontSize: '0.8rem', color: '#475569', lineHeight: 1.4 }}>
-                          <InteractiveText text={article.description || article.snippet} onSelectWord={handleWordSelect} />
+                          <InteractiveText text={translation?.description || article.description || article.snippet} onSelectWord={handleWordSelect} />
                         </p>
                       </div>
                       <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -376,7 +391,7 @@ export default function Articles() {
                       </div>
                       {isExpanded && (
                         <div style={{ marginTop: '0.5rem', padding: '0.65rem', background: '#f8fafc', borderRadius: '6px', borderLeft: '3px solid #2563eb', fontSize: '0.78rem', color: '#334155' }}>
-                          <InteractiveText text={article.content || article.summary || article.description} onSelectWord={handleWordSelect} />
+                          <InteractiveText text={translation?.content || translation?.aiSummary || article.content || article.summary || article.description} onSelectWord={handleWordSelect} />
                         </div>
                       )}
                     </div>
@@ -511,6 +526,7 @@ export default function Articles() {
             {articles.map((article, index) => {
               const isLast = index === articles.length - 1;
               const imageUrl = article.urlToImage || article.image || article.imageUrl || article.url_to_image;
+              const translation = translations[article.id];
               return (
                 <div
                   key={article.id || article.url || index}
@@ -546,7 +562,7 @@ export default function Articles() {
                     </div>
                     <div style={{ position: 'relative', zIndex: 2 }}>
                       <h2 style={{ fontSize: '1.45rem', fontWeight: 800, margin: '0 0 0.75rem 0', lineHeight: 1.35 }}>
-                        <InteractiveText text={article.title} onSelectWord={handleWordSelect} />
+                        <InteractiveText text={translation?.title || article.title} onSelectWord={handleWordSelect} />
                       </h2>
                       <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 500 }}>
                         {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Today'}
@@ -557,7 +573,7 @@ export default function Articles() {
                     <div style={{ overflowY: 'auto', paddingRight: '0.75rem' }}>
                       <p style={{ margin: 0, fontSize: '1rem', color: '#334155', lineHeight: 1.7, fontWeight: 400 }}>
                         <InteractiveText
-                          text={article.content || article.description || article.summary || "Summary content not available."}
+                          text={translation?.content || translation?.aiSummary || article.content || article.description || article.summary || "Summary content not available."}
                           onSelectWord={handleWordSelect}
                         />
                       </p>

@@ -15,9 +15,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/users', userRoutes);
 const debateRoutes = require('./routes/debateRoutes');
+const translateRoutes = require('./routes/translateRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/debates', debateRoutes);
+app.use('/api/translate', translateRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {

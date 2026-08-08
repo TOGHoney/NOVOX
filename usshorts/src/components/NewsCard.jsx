@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { FiBookOpen, FiClock, FiGlobe, FiCpu } from 'react-icons/fi';
+import { FiBookOpen, FiClock, FiGlobe, FiCpu, FiRepeat } from 'react-icons/fi';
 
-export default function NewsCard({ article, activeId, onSelect }) {
+export default function NewsCard({ article, activeId, onSelect, translation = null }) {
     const [showSummary, setShowSummary] = useState(false);
+    const [showOriginal, setShowOriginal] = useState(false);
     const isActive = activeId === article.id;
+    const translated = Boolean(translation) && !showOriginal;
 
     return (
         <article className={`news-card ${isActive ? 'selected' : ''}`}>
@@ -11,8 +13,18 @@ export default function NewsCard({ article, activeId, onSelect }) {
                 <span className="pill">{article.category}</span>
                 <span className="muted">{article.source}</span>
             </div>
-            <h3>{article.title}</h3>
-            <p>{article.description}</p>
+            <h3>{translated ? translation.title : article.title}</h3>
+            <p>{translated ? translation.description : article.description}</p>
+
+            {translation && (
+                <button
+                    className="ghost-btn"
+                    style={{ marginBottom: '0.5rem', fontSize: '0.75rem' }}
+                    onClick={() => setShowOriginal(!showOriginal)}
+                >
+                    <FiRepeat /> {showOriginal ? `Show ${article.source} translation` : 'Show original'}
+                </button>
+            )}
 
             {article.aiSummary && (
                 <div
@@ -34,7 +46,7 @@ export default function NewsCard({ article, activeId, onSelect }) {
                     </div>
                     {showSummary && (
                         <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.6, opacity: 0.85 }}>
-                            {article.aiSummary}
+                            {translated ? translation.aiSummary : article.aiSummary}
                         </p>
                     )}
                 </div>

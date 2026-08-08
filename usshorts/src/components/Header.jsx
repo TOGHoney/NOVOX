@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { FiBell, FiGlobe, FiSearch } from 'react-icons/fi';
+import { FiBell, FiSearch } from 'react-icons/fi';
+import LanguageSelector from './LanguageSelector';
 
 export default function Header() {
   const location = useLocation();
@@ -27,9 +28,7 @@ export default function Header() {
             placeholder="Search topic, word, or country"
           />
         </label>
-        <button className="icon-btn" aria-label="Switch language pair">
-          <FiGlobe />
-        </button>
+        <LanguageSelector />
         <button className="icon-btn" aria-label="Notifications">
           <FiBell />
         </button>

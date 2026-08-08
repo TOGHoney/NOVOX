@@ -195,6 +195,37 @@ input {
   padding: 0 16px;
 }
 
+.language-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  color: var(--text-muted, inherit);
+  cursor: pointer;
+}
+
+.language-select svg {
+  flex-shrink: 0;
+}
+
+.language-select select {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text, inherit);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.language-select select option {
+  background: var(--bg, #fff);
+  color: #000;
+}
+
 /* ── Eyebrow & Pills ── */
 .eyebrow {
   margin: 0;

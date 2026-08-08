@@ -23,6 +23,8 @@ const Signup = () => {
         setError('');
         setLoading(true);
         try {
+            await signup({ username, email, password });
+            navigate('/learning-profile');
             await signup({username, email, password});
             console.log("Navigating..");
             navigate("/learning-profile");
@@ -42,6 +44,7 @@ const Signup = () => {
                 <h2 className="auth-title">Create your account</h2>
                 <p className="auth-subtitle">
                     Already have an account?{' '}
+                    <a onClick={() => navigate('/login')}>Sign in</a>
                     <a onClick={() => navigate("/login")}>Sign in</a>
                 </p>
 
