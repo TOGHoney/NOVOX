@@ -7,6 +7,8 @@
     "dev": "concurrently \"vite\" \"cd backend && npm run dev\"",
     "dev:frontend": "vite",
     "dev:backend": "cd backend && npm run dev",
+    "lt:install": "python -m venv .libretranslate && .libretranslate\\Scripts\\python.exe -m pip install libretranslate",
+    "lt:start": ".libretranslate\\Scripts\\libretranslate.exe --host 127.0.0.1 --port 5002 --load-only en,es,fr,de,ja",
     "build": "vite build",
     "preview": "vite preview"
   },

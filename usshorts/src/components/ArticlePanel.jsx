@@ -1,11 +1,20 @@
-import { FiBookmark, FiMic, FiExternalLink, FiCpu } from 'react-icons/fi';
+import { useState } from 'react';
+import { FiBookmark, FiMic, FiExternalLink, FiCpu, FiRepeat } from 'react-icons/fi';
 
-export default function ArticlePanel({ article }) {
+export default function ArticlePanel({ article, translation = null }) {
+    const [showOriginal, setShowOriginal] = useState(false);
+    const translated = Boolean(translation) && !showOriginal;
+
     return (
         <section className="article-panel">
             <div className="article-toolbar">
                 <span className="pill soft">Full article</span>
                 <div className="toolbar-actions">
+                    {translation && (
+                        <button className="ghost-btn" onClick={() => setShowOriginal(!showOriginal)}>
+                            <FiRepeat /> {showOriginal ? 'Show translation' : 'Show original'}
+                        </button>
+                    )}
                     <a href={article.url} target="_blank" rel="noopener noreferrer" className="ghost-btn">
                         <FiExternalLink /> Open source
                     </a>
@@ -15,9 +24,9 @@ export default function ArticlePanel({ article }) {
             </div>
             <div className="article-body">
                 <p className="eyebrow">{article.source} · {new Date(article.publishedAt).toLocaleDateString()}</p>
-                <h2>{article.title}</h2>
+                <h2>{translated ? translation.title : article.title}</h2>
 
-                {article.aiSummary && (
+                {(translated ? translation.aiSummary : article.aiSummary) && (
                     <div style={{
                         padding: '1rem 1.25rem',
                         background: 'var(--bg-card, rgba(255,255,255,0.03))',
@@ -32,13 +41,13 @@ export default function ArticlePanel({ article }) {
                             </span>
                         </div>
                         <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.7 }}>
-                            {article.aiSummary}
+                            {translated ? translation.aiSummary : article.aiSummary}
                         </p>
                     </div>
                 )}
 
-                <p>{article.description}</p>
-                {article.content && <p>{article.content}</p>}
+                <p>{translated ? translation.description : article.description}</p>
+                {article.content && <p>{translated ? translation.content : article.content}</p>}
             </div>
         </section>
     );

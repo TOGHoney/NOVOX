@@ -1,4 +1,5 @@
-import { FiBell, FiGlobe, FiSearch } from 'react-icons/fi';
+import { FiBell, FiSearch } from 'react-icons/fi';
+import LanguageSelector from './LanguageSelector';
 
 export default function Header() {
   return (
@@ -14,9 +15,7 @@ export default function Header() {
           <FiSearch />
           <input id="search-news" type="text" placeholder="Search topic, word, or country" />
         </label>
-        <button className="icon-btn" aria-label="Switch language pair">
-          <FiGlobe />
-        </button>
+        <LanguageSelector />
         <button className="icon-btn" aria-label="Notifications">
           <FiBell />
         </button>

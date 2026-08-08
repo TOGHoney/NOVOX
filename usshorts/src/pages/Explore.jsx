@@ -3,6 +3,8 @@ import { FiSearch } from 'react-icons/fi';
 import NewsCard from '../components/NewsCard';
 import NotFound from './NotFound';
 import { searchNews } from '../api/newsService';
+import useArticleTranslation from '../hooks/useArticleTranslation';
+import { useLanguage } from '../context/LanguageContext';
 
 const TOPICS = ['Technology', 'Business', 'Science', 'Health', 'Sports', 'Entertainment'];
 
@@ -12,6 +14,8 @@ export default function Explore() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
+    const { translations, loading: translating, unavailable } = useArticleTranslation(articles);
+    const { targetLanguage } = useLanguage();
 
     const handleSearch = async (query) => {
         if (!query.trim()) return;
@@ -100,12 +104,20 @@ export default function Explore() {
                         </h3>
                         {articles.length > 0 ? (
                             <div className="news-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                                {(translating || unavailable) && targetLanguage !== 'en' && (
+                                    <div style={{ fontSize: '0.85rem', opacity: 0.7, gridColumn: '1 / -1' }}>
+                                        {unavailable
+                                            ? 'Translation service unavailable — showing original text.'
+                                            : `Translating results to ${targetLanguage.toUpperCase()}...`}
+                                    </div>
+                                )}
                                 {articles.map((article) => (
                                     <NewsCard
                                         key={article.id}
                                         article={article}
                                         activeId={null}
                                         onSelect={() => { }}
+                                        translation={translations[article.id] || null}
                                     />
                                 ))}
                             </div>

@@ -3,12 +3,16 @@ import NewsCard from '../components/NewsCard';
 import ArticlePanel from '../components/ArticlePanel';
 import NotFound from './NotFound';
 import { fetchHeadlines } from '../api/newsService';
+import useArticleTranslation from '../hooks/useArticleTranslation';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Home() {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [activeId, setActiveId] = useState(null);
+    const { translations, loading: translating, unavailable } = useArticleTranslation(articles);
+    const { targetLanguage } = useLanguage();
 
     useEffect(() => {
         fetchHeadlines('general')
@@ -46,6 +50,13 @@ export default function Home() {
                         </div>
                         <span className="pill soft">{articles.length} articles</span>
                     </div>
+                    {(translating || unavailable) && targetLanguage !== 'en' && (
+                        <div style={{ marginBottom: '1rem', fontSize: '0.85rem', opacity: 0.7 }}>
+                            {unavailable
+                                ? 'Translation service unavailable — showing original text.'
+                                : `Translating to ${targetLanguage.toUpperCase()}...`}
+                        </div>
+                    )}
                     <div className="news-list">
                         {articles.map((article) => (
                             <NewsCard
@@ -53,11 +64,17 @@ export default function Home() {
                                 article={article}
                                 activeId={activeId}
                                 onSelect={(id) => setActiveId(id)}
+                                translation={translations[article.id] || null}
                             />
                         ))}
                     </div>
                 </div>
-                {activeArticle && <ArticlePanel article={activeArticle} />}
+                {activeArticle && (
+                    <ArticlePanel
+                        article={activeArticle}
+                        translation={translations[activeArticle.id] || null}
+                    />
+                )}
             </section>
         </div>
     );

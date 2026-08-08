@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import NewsCard from '../components/NewsCard';
 import NotFound from './NotFound';
 import { fetchHeadlines } from '../api/newsService';
+import useArticleTranslation from '../hooks/useArticleTranslation';
+import { useLanguage } from '../context/LanguageContext';
 
 const CATEGORIES = [
     { label: 'All', value: 'general' },
@@ -19,6 +21,8 @@ export default function Articles() {
     const [error, setError] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('general');
     const [activeId, setActiveId] = useState(null);
+    const { translations, loading: translating, unavailable } = useArticleTranslation(articles);
+    const { targetLanguage } = useLanguage();
 
     useEffect(() => {
         setLoading(true);
@@ -68,6 +72,13 @@ export default function Articles() {
                 <div className="feed-layout" style={{ gridTemplateColumns: '1fr', maxWidth: '800px', margin: '0 auto' }}>
                     <div className="news-column">
                         <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Available Articles ({articles.length})</h3>
+                        {(translating || unavailable) && targetLanguage !== 'en' && (
+                            <div style={{ marginBottom: '1rem', fontSize: '0.85rem', opacity: 0.7 }}>
+                                {unavailable
+                                    ? 'Translation service unavailable — showing original text.'
+                                    : `Translating to ${targetLanguage.toUpperCase()}...`}
+                            </div>
+                        )}
                         <div className="news-list">
                             {articles.map((article) => (
                                 <NewsCard
@@ -75,6 +86,7 @@ export default function Articles() {
                                     article={article}
                                     activeId={activeId}
                                     onSelect={(id) => setActiveId(id)}
+                                    translation={translations[article.id] || null}
                                 />
                             ))}
                         </div>
