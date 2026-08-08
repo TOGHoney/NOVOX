@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/authService';
 
-const Signup = ({ setView }) => {
+const Signup = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -24,7 +24,7 @@ const Signup = ({ setView }) => {
         setLoading(true);
         try {
             await signup({ username, email, password });
-            setView('dashboard');
+            navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'An error occurred during signup.');
         } finally {
@@ -39,7 +39,7 @@ const Signup = ({ setView }) => {
                 <h2 className="auth-title">Create your account</h2>
                 <p className="auth-subtitle">
                     Already have an account?{' '}
-                    <a onClick={() => setView('login')}>Sign in</a>
+                    <a onClick={() => navigate('/login')}>Sign in</a>
                 </p>
 
                 <form className="auth-form" onSubmit={onSubmit}>

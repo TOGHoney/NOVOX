@@ -40,9 +40,9 @@ Self-hosted LibreTranslate so news articles can be translated into a chosen lang
 ## How to run (dev)
 ```
 npm run lt:install   # once
-npm run lt:start     # terminal 1 — LibreTranslate on :5002
-npm run dev          # terminal 2 — Vite + Express backend
+npm run dev          # starts Vite + Express backend + LibreTranslate together
 ```
+`npm run dev` launches Vite (:5173), the Express backend (:5000), and LibreTranslate (:5002) via `concurrently --kill-others-on-fail`. Pressing Ctrl+C stops all three. Run `npm run lt:start` alone only for isolated translation testing.
 
 ## Deployment note
 On the server hosting the backend: install libretranslate, run it on `127.0.0.1:5002`, set `LIBRETRANSLATE_URL=http://127.0.0.1:5002`. Do NOT rely on a local copy on the developer laptop.
