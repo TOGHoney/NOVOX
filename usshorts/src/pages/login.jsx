@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { login } from '../api/authService';
+import {useNavigate} from 'react-router-dom';
 
-const Login = ({ setView }) => {
+const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate=useNavigate();
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -14,7 +16,7 @@ const Login = ({ setView }) => {
         setLoading(true);
         try {
             await login(formData);
-            setView('dashboard');
+            navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Invalid email or password.');
         } finally {
@@ -29,7 +31,7 @@ const Login = ({ setView }) => {
                 <h2 className="auth-title">Welcome back</h2>
                 <p className="auth-subtitle">
                     Don't have an account?{' '}
-                    <a onClick={() => setView('signup')}>Create one</a>
+                    <a onClick={() => navigate('/signup')}>Create one</a>
                 </p>
 
                 <form className="auth-form" onSubmit={onSubmit}>

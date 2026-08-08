@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import { FiAward, FiBookOpen, FiCompass, FiHome, FiMessageCircle, FiUser } from 'react-icons/fi';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FiAward, FiLogOut, FiBookOpen, FiCompass, FiHome, FiMessageCircle, FiUser } from 'react-icons/fi';
 import Logo from './Logo';
 
 const items = [
@@ -12,6 +12,11 @@ const items = [
 ];
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
+  const navigate=useNavigate();
+  const logout=()=>{
+    localStorage.removeItem('user');
+    navigate('/login');
+  }
   return (
     <>
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
@@ -36,6 +41,12 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </NavLink>
           ))}
         </nav>
+
+        <button className="nav-item" onClick={logout}>
+          <FiLogOut/>
+          <span>Logout</span>
+        </button>
+
         <div className="sidebar-card">
           <p>Language pair</p>
           <strong>Hindi → Japanese</strong>

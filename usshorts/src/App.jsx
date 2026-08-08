@@ -1,9 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
-import { FiMenu } from 'react-icons/fi';
-
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
 
 import Login from './pages/login';
 import Signup from './pages/Signup';
@@ -18,18 +13,6 @@ import { getUser } from './api/authService';
 import { LanguageProvider } from './context/LanguageContext';
 
 export default function App() {
-  const [view, setView] = useState(() => (getUser() ? 'dashboard' : 'signup'));
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  if (view === 'login') {
-    return <Login setView={setView} />;
-  }
-
-  if (view === 'signup') {
-    return <Signup setView={setView} />;
-  }
-
   return (
     <LanguageProvider>
       <div className={`app-shell ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
