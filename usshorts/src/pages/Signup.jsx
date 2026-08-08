@@ -24,8 +24,13 @@ const Signup = () => {
         setLoading(true);
         try {
             await signup({ username, email, password });
-            navigate('/');
+            navigate('/learning-profile');
+            await signup({username, email, password});
+            console.log("Navigating..");
+            navigate("/learning-profile");
         } catch (err) {
+            console.log(err.response);
+            console.log(err.response?.data);
             setError(err.response?.data?.message || 'An error occurred during signup.');
         } finally {
             setLoading(false);
@@ -40,6 +45,7 @@ const Signup = () => {
                 <p className="auth-subtitle">
                     Already have an account?{' '}
                     <a onClick={() => navigate('/login')}>Sign in</a>
+                    <a onClick={() => navigate("/login")}>Sign in</a>
                 </p>
 
                 <form className="auth-form" onSubmit={onSubmit}>

@@ -5,9 +5,13 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    targetLanguage: { type: String, default: 'English' },
-    nativeLanguage: { type: String, default: 'Unknown' },
-    cefrLevel: { type: String, default: 'A1' }
+
+    targetLanguage: { type: String},
+    nativeLanguage: { type: String, default: "English"},
+    cefrLevel: { type: String},
+    
+    profileCompleted: {type: Boolean, default: false},
+    streak: {type: Number, default: 0}
 }, { timestamps: true });
 
 // Change to a regular function expression to ensure 'this' and 'next' work

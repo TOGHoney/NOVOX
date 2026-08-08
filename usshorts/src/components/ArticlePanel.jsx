@@ -1,9 +1,23 @@
 import { useState } from 'react';
 import { FiBookmark, FiMic, FiExternalLink, FiCpu, FiRepeat } from 'react-icons/fi';
 
-export default function ArticlePanel({ article, translation = null }) {
+export default function ArticlePanel({ article, translation = null, onSelectWord }) {
     const [showOriginal, setShowOriginal] = useState(false);
     const translated = Boolean(translation) && !showOriginal;
+
+    const handleTextSelection = () => {
+        const selectedText = window.getSelection().toString().trim();
+        if (onSelectWord && selectedText && selectedText.length > 0 && selectedText.length < 50) {
+            onSelectWord(selectedText);
+        }
+    };
+
+    const cleanContent = (text) => {
+        if (!text) return '';
+        return text
+            .replace(/\[\+\d+\s*chars\]/gi, '')
+            .replace(/<\/?[^>]+(>|$)/g, '');
+    };
 
     return (
         <section className="article-panel">
@@ -22,9 +36,9 @@ export default function ArticlePanel({ article, translation = null }) {
                     <button className="ghost-btn"><FiMic /> Discuss</button>
                 </div>
             </div>
-            <div className="article-body">
+            <div className="article-body" onMouseUp={handleTextSelection}>
                 <p className="eyebrow">{article.source} · {new Date(article.publishedAt).toLocaleDateString()}</p>
-                <h2>{translated ? translation.title : article.title}</h2>
+                <h2>{translated ? translation.title : cleanContent(article.title)}</h2>
 
                 {(translated ? translation.aiSummary : article.aiSummary) && (
                     <div style={{
@@ -41,13 +55,13 @@ export default function ArticlePanel({ article, translation = null }) {
                             </span>
                         </div>
                         <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: 1.7 }}>
-                            {translated ? translation.aiSummary : article.aiSummary}
+                            {translated ? translation.aiSummary : cleanContent(article.aiSummary)}
                         </p>
                     </div>
                 )}
 
-                <p>{translated ? translation.description : article.description}</p>
-                {article.content && <p>{translated ? translation.content : article.content}</p>}
+                <p>{translated ? translation.description : cleanContent(article.description)}</p>
+                {article.content && <p>{translated ? translation.content : cleanContent(article.content)}</p>}
             </div>
         </section>
     );

@@ -11,6 +11,7 @@ import Debates from './pages/Debates';
 import DebateRoom from './pages/DebateRoom';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import LearningProfile from './pages/LearningProfile';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route element={<ProtectedRoute />}>
+          <Route path="/learning-profile" element={<LearningProfile />} />
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
